@@ -1,14 +1,6 @@
-﻿<CascadingAuthenticationState>
-<Router AppAssembly="typeof(Program).Assembly" Context="routeData">
+﻿<Router AppAssembly="typeof(Program).Assembly" Context="routeData">
     <Found>
-            <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)">
-                <NotAuthorized>
-                    <RedirectToLogin />
-                </NotAuthorized>
-                <Authorizing>
-                    <div class="main">Please wait...</div>
-                </Authorizing>
-            </AuthorizeRouteView>
+        <RouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)" />
     </Found>
     <NotFound>
         <LayoutView Layout="typeof(MainLayout)">
@@ -16,4 +8,3 @@
         </LayoutView>
     </NotFound>
 </Router>
-</CascadingAuthenticationState>
