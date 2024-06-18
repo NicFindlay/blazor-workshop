@@ -1,7 +1,7 @@
 ﻿@inject HttpClient HttpClient
 
-<div class="dialog-container">
-    <div class="dialog">
+
+
         <div class="dialog-title">
             <h2>@Pizza.Special?.Name</h2>
             @Pizza.Special?.Description
@@ -60,8 +60,6 @@
             </span>
             <button class="btn btn-success ml-auto" @onclick="OnConfirm">Order</button>
         </div>
-    </div>
-</div>
 
 @code {
     // toppings is only null while loading
