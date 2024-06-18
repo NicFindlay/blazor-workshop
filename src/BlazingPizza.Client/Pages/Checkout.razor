@@ -1,0 +1,59 @@
+﻿@page "/checkout"
+@inject HttpClient HttpClient
+@inject OrderState OrderState
+@inject NavigationManager NavigationManager
+
+<PageTitle>Blazing Pizza - Checkout</PageTitle>
+
+<div class="main">
+    <EditForm Model="OrderState.Order.DeliveryAddress" OnValidSubmit="PlaceOrder">
+        <div class="checkout-cols">
+            <div class="checkout-order-details">
+                <h4>Review order</h4>
+                <OrderReview Order="OrderState.Order" />
+            </div>
+
+            <div class="checkout-delivery-address">
+                <h4>Deliver to...</h4>
+                <AddressEditor Address="OrderState.Order.DeliveryAddress" />
+            </div>
+        </div>
+
+        <button class="checkout-button btn btn-warning" type="submit" disabled="@isSubmitting">
+            Place order
+        </button>
+        <DataAnnotationsValidator />
+    </EditForm>
+</div>
+
+@code {
+    bool isSubmitting = false;
+
+    async Task PlaceOrder()
+    {
+        try
+        {
+            isSubmitting = true;
+            var response = await HttpClient.PostAsJsonAsync("orders", OrderState.Order);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var newOrderId = await response.Content.ReadFromJsonAsync<int>();
+                OrderState.ResetOrder();
+                NavigationManager.NavigateTo($"myorders/{newOrderId}");
+            }
+            else
+            {
+                Console.WriteLine("Error placing order: " + response.ReasonPhrase);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Exception: " + ex.Message);
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+}
