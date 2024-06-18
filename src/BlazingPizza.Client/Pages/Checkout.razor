@@ -2,6 +2,9 @@
 @inject HttpClient HttpClient
 @inject OrderState OrderState
 @inject NavigationManager NavigationManager
+@inject OrdersClient OrdersClient
+
+@attribute [Authorize]
 
 <PageTitle>Blazing Pizza - Checkout</PageTitle>
 
@@ -38,7 +41,7 @@
 
             if (response.IsSuccessStatusCode)
             {
-                var newOrderId = await response.Content.ReadFromJsonAsync<int>();
+                var newOrderId = await OrdersClient.PlaceOrder(OrderState.Order);
                 OrderState.ResetOrder();
                 NavigationManager.NavigateTo($"myorders/{newOrderId}");
             }
